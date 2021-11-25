@@ -16,7 +16,7 @@ export async function createUser(req: Request, res: Response) {
 
     const users = await knexInstance<User>("users").select().where({ email });
 
-    if (!!users.length) {
+    if (users.length) {
       return res
         .status(400)
         .json({ success: false, error: "E-mail already registered." });
@@ -33,7 +33,7 @@ export async function createUser(req: Request, res: Response) {
       })
       .returning(["id", "first_name", "last_name", "email"]);
 
-    if (!!users.length) {
+    if (!users.length) {
       return res
         .status(400)
         .json({ success: false, error: "Failed to register user." });
