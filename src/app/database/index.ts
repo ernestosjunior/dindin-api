@@ -15,7 +15,7 @@ const config: Knex.Config = {
     port: Number(dbPort),
   },
 };
-console.log(process.env.DB_PASSWORD);
+
 const knexInstance = knex(config);
 
 export default knexInstance;
