@@ -1,5 +1,5 @@
-import Joi from "joi";
+import Joi from 'joi'
 
-const joi = Joi;
+const joi = Joi
 
-export default joi;
+export default joi
