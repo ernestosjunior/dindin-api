@@ -4,7 +4,10 @@ import knexInstance from '../../app/database'
 import { User } from '../../app/database/interfaces'
 import { userSchemas } from '../validations'
 
-export async function createUser(req: Request, res: Response) {
+export async function createUser(
+  req: Request,
+  res: Response,
+): Promise<Response> {
   const { firstName, lastName, email, password } = req.body
 
   try {
@@ -40,6 +43,39 @@ export async function createUser(req: Request, res: Response) {
     }
 
     return res.status(200).json({ success: true, data: user })
+  } catch (error: any) {
+    return res.status(500).json({ success: false, error: error.message })
+  }
+}
+
+export const updatePassword = async (
+  req: Request,
+  res: Response,
+): Promise<Response> => {
+  const { password } = req.body
+  const { id } = req.user
+
+  try {
+    const { error } = userSchemas.updatePassword.validate(req.body)
+
+    if (error) {
+      return res.status(400).json({ success: false, error })
+    }
+
+    const newHashPassword = await bcrypt.hash(password, 10)
+
+    const userUpdated = await knexInstance<User>('users')
+      .where({ id })
+      .update({ password: newHashPassword })
+      .returning(['id', 'first_name', 'last_name', 'email', 'updated_at'])
+
+    if (!userUpdated.length) {
+      return res
+        .status(400)
+        .json({ success: false, error: 'Failed to update password.' })
+    }
+
+    return res.status(200).json({ success: true, data: userUpdated })
   } catch (error: any) {
     return res.status(500).json({ success: false, error: error.message })
   }

@@ -32,7 +32,7 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
 
     next()
   } catch (error: any) {
-    return res.status(500).json(error.message)
+    return res.status(500).json({ success: false, error: error.message })
   }
 }
 

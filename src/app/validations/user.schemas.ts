@@ -7,3 +7,8 @@ export const createUser = joi.object({
   password: joi.string().required(),
   repeatPassword: joi.ref('password'),
 })
+
+export const updatePassword = joi.object({
+  password: joi.string().required(),
+  repeatPassword: joi.ref('password'),
+})
