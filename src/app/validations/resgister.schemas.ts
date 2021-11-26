@@ -7,3 +7,15 @@ export const createRegister = joi.object({
   category: joi.string().required(),
   description: joi.string(),
 })
+
+export const updateRegister = joi.object({
+  type: joi.number(),
+  value: joi.number(),
+  date: joi.date(),
+  category: joi.string(),
+  description: joi.string(),
+})
+
+export const deleteRegister = joi.object({
+  id: joi.number().required(),
+})
