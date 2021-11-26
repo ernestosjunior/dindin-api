@@ -19,6 +19,7 @@ export const createRegister = async (
 
     const register = await knexInstance<Register>('registers')
       .insert({
+        user_id: id,
         type,
         value,
         date,
