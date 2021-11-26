@@ -15,7 +15,7 @@ create table if not exists registers(
   user_id integer  references users(id) on delete cascade,
   type integer not null,
   value integer not null,
-  date text not null,
+  date timestamp not null,
   category text not null,
   description text,
   created_at timestamp default now(),

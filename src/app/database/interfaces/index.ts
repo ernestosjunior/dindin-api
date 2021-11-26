@@ -13,7 +13,7 @@ export interface Register {
   user_id: number
   type: number
   value: number
-  date: string
+  date: Date
   category: string
   description: string
   created_at: Date
