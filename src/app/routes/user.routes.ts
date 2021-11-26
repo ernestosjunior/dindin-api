@@ -10,5 +10,6 @@ userRoutes.use(auth)
 userRoutes.patch('/update', userControllers.updateUser)
 userRoutes.post('/password', userControllers.updatePassword)
 userRoutes.delete('/delete', userControllers.deleteUser)
+userRoutes.get('/', userControllers.getUser)
 
 export default userRoutes

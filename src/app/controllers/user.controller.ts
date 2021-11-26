@@ -142,3 +142,18 @@ export const deleteUser = async (
     return res.status(500).json({ success: false, error: error.message })
   }
 }
+
+export const getUser = async (
+  req: Request,
+  res: Response,
+): Promise<Response> => {
+  const { id } = req.user
+
+  try {
+    const user = await knexInstance<User>('users').select().where({ id })
+
+    return res.status(200).json({ success: true, data: user })
+  } catch (error: any) {
+    return res.status(500).json({ success: false, error: error.message })
+  }
+}
