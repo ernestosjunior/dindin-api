@@ -56,10 +56,18 @@ export const updateRegister = async (
   }
 
   try {
-    const { error } = registerSchemas.updateRegister.validate(req.params)
+    const updateBody = registerSchemas.updateRegister.validate(req.params)
 
-    if (error) {
-      return res.status(400).json({ success: false, error })
+    const updateParams = registerSchemas.updateRegisterParams.validate(
+      req.params,
+    )
+
+    if (updateBody.error) {
+      return res.status(400).json({ success: false, error: updateBody.error })
+    }
+
+    if (updateParams.error) {
+      return res.status(400).json({ success: false, error: updateParams.error })
     }
 
     const register = await knexInstance<Register>('registers')
@@ -104,6 +112,12 @@ export const deleteRegister = async (
   const { id: user_id } = req.user
 
   try {
+    const { error } = registerSchemas.deleteRegister.validate(req.params)
+
+    if (error) {
+      return res.status(400).json({ success: false, error })
+    }
+
     const register = await knexInstance<Register>('registers')
       .select()
       .where({ id: Number(id), user_id })
@@ -158,6 +172,12 @@ export const getRegister = async (
   const { id: user_id } = req.user
 
   try {
+    const { error } = registerSchemas.getRegister.validate(req.params)
+
+    if (error) {
+      return res.status(400).json({ success: false, error })
+    }
+
     const register = await knexInstance<Register>('registers')
       .select()
       .where({ id: Number(id), user_id })

@@ -16,6 +16,14 @@ export const updateRegister = joi.object({
   description: joi.string(),
 })
 
+export const updateRegisterParams = joi.object({
+  id: joi.number().required(),
+})
+
 export const deleteRegister = joi.object({
+  id: joi.number().required(),
+})
+
+export const getRegister = joi.object({
   id: joi.number().required(),
 })
