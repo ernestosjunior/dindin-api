@@ -118,3 +118,27 @@ export const updatePassword = async (
     return res.status(500).json({ success: false, error: error.message })
   }
 }
+
+export const deleteUser = async (
+  req: Request,
+  res: Response,
+): Promise<Response> => {
+  const { id } = req.user
+
+  try {
+    const user = await knexInstance<User>('users')
+      .where({ id })
+      .del()
+      .returning(['id', 'first_name', 'last_name'])
+
+    if (!user.length) {
+      return res
+        .status(400)
+        .json({ success: false, error: 'Failed to delete user.' })
+    }
+
+    return res.status(200).json({ success: true, data: user })
+  } catch (error: any) {
+    return res.status(500).json({ success: false, error: error.message })
+  }
+}
