@@ -9,5 +9,6 @@ registerRoutes.post('/new', registerControllers.createRegister)
 registerRoutes.patch('/update/:id', registerControllers.updateRegister)
 registerRoutes.delete('/delete/:id', registerControllers.deleteRegister)
 registerRoutes.get('/', registerControllers.getAllRegisters)
+registerRoutes.get('/:id', registerControllers.getRegister)
 
 export default registerRoutes

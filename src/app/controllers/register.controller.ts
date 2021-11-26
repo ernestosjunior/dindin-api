@@ -48,6 +48,13 @@ export const updateRegister = async (
   const { id } = req.params
   const { id: user_id } = req.user
 
+  if (!type && !value && !date && !category && !description) {
+    return res.status(400).json({
+      success: false,
+      error: 'It is necessary to send at least one field.',
+    })
+  }
+
   try {
     const { error } = registerSchemas.updateRegister.validate(req.params)
 
@@ -138,6 +145,31 @@ export const getAllRegisters = async (
       .where({ user_id })
 
     return res.status(200).json({ success: true, data: registers })
+  } catch (error: any) {
+    return res.status(500).json({ success: false, error: error.message })
+  }
+}
+
+export const getRegister = async (
+  req: Request,
+  res: Response,
+): Promise<Response> => {
+  const { id } = req.params
+  const { id: user_id } = req.user
+
+  try {
+    const register = await knexInstance<Register>('registers')
+      .select()
+      .where({ id: Number(id), user_id })
+
+    if (!register) {
+      return res.status(400).json({
+        success: false,
+        error: 'Register not found or does not belong to the user.',
+      })
+    }
+
+    return res.status(200).json({ success: true, data: register })
   } catch (error: any) {
     return res.status(500).json({ success: false, error: error.message })
   }
