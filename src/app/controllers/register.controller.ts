@@ -8,7 +8,7 @@ export const createRegister = async (
   res: Response,
 ): Promise<Response> => {
   const { type, value, date, category, description } = req.body
-  const { id } = req.user
+  const { id: user_id } = req.user
 
   try {
     const { error } = registerSchemas.createRegister.validate(req.body)
@@ -19,7 +19,7 @@ export const createRegister = async (
 
     const register = await knexInstance<Register>('registers')
       .insert({
-        user_id: id,
+        user_id,
         type,
         value,
         date,
@@ -35,6 +35,55 @@ export const createRegister = async (
     }
 
     return res.status(200).json({ success: true, data: register })
+  } catch (error: any) {
+    return res.status(500).json({ success: false, error: error.message })
+  }
+}
+
+export const updateRegister = async (
+  req: Request,
+  res: Response,
+): Promise<Response> => {
+  const { type, value, date, category, description } = req.body
+  const { id } = req.params
+  const { id: user_id } = req.user
+
+  try {
+    const { error } = registerSchemas.updateRegister.validate(req.params)
+
+    if (error) {
+      return res.status(400).json({ success: false, error })
+    }
+
+    const register = await knexInstance<Register>('registers')
+      .select()
+      .where({ id: Number(id), user_id })
+      .first()
+
+    if (!register) {
+      return res.status(400).json({
+        success: false,
+        error: 'Register not found or does not belong to the user.',
+      })
+    }
+
+    const registerUpdated = await knexInstance<Register>('registers')
+      .update({
+        type,
+        value,
+        date,
+        category,
+        description,
+      })
+      .returning('*')
+
+    if (!registerUpdated.length) {
+      return res
+        .status(400)
+        .json({ success: false, error: 'Failed to update register.' })
+    }
+
+    return res.status(200).json({ success: true, data: registerUpdated })
   } catch (error: any) {
     return res.status(500).json({ success: false, error: error.message })
   }

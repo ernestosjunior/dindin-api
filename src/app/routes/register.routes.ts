@@ -6,5 +6,6 @@ const registerRoutes: Router = Router()
 
 registerRoutes.use(auth)
 registerRoutes.post('/new', registerControllers.createRegister)
+registerRoutes.patch('/update', registerControllers.updateRegister)
 
 export default registerRoutes
