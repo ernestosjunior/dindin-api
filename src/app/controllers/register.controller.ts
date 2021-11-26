@@ -125,3 +125,20 @@ export const deleteRegister = async (
     return res.status(500).json({ success: false, error: error.message })
   }
 }
+
+export const getAllRegisters = async (
+  req: Request,
+  res: Response,
+): Promise<Response> => {
+  const { id: user_id } = req.user
+
+  try {
+    const registers = await knexInstance<Register>('registers')
+      .select()
+      .where({ user_id })
+
+    return res.status(200).json({ success: true, data: registers })
+  } catch (error: any) {
+    return res.status(500).json({ success: false, error: error.message })
+  }
+}
