@@ -48,6 +48,44 @@ export async function createUser(
   }
 }
 
+export const updateUser = async (
+  req: Request,
+  res: Response,
+): Promise<Response> => {
+  const { firstName, lastName, email } = req.body
+  const { id } = req.user
+
+  if (!firstName && !lastName && !email) {
+    return res.status(400).json({
+      success: false,
+      error: 'It is necessary to send at least one field.',
+    })
+  }
+
+  try {
+    const { error } = userSchemas.updateUser.validate(req.body)
+
+    if (error) {
+      return res.status(400).json({ success: false, error })
+    }
+
+    const userUpdated = await knexInstance<User>('users')
+      .where({ id })
+      .update({ first_name: firstName, last_name: lastName, email })
+      .returning(['id', 'first_name', 'last_name', 'email', 'updated_at'])
+
+    if (!userUpdated.length) {
+      return res
+        .status(400)
+        .json({ success: false, error: 'Failed to update user.' })
+    }
+
+    return res.status(200).json({ success: true, data: userUpdated })
+  } catch (error: any) {
+    return res.status(500).json({ success: false, error: error.message })
+  }
+}
+
 export const updatePassword = async (
   req: Request,
   res: Response,

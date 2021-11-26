@@ -7,6 +7,7 @@ const userRoutes: Router = Router()
 userRoutes.post('/new', userControllers.createUser)
 
 userRoutes.use(auth)
+userRoutes.patch('/update', userControllers.updateUser)
 userRoutes.post('/password', userControllers.updatePassword)
 
 export default userRoutes
