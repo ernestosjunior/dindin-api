@@ -150,7 +150,7 @@ export const getUser = async (
   const { id } = req.user
 
   try {
-    const user = await knexInstance<User>('users').select().where({ id })
+    const user = await knexInstance<User>('users').select().where({ id }).returning(["id", "first_name","last_name","email","created_at","updated_at"])
 
     return res.status(200).json({ success: true, data: user })
   } catch (error: any) {
