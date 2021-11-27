@@ -36,7 +36,6 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "yarn build && nodemon dist/index.js"
+    "start": "node dist/index.js"
   }
 }
