@@ -3,7 +3,8 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const dbPort = process.env.DB_PORT!
+const dbPort = Number(process.env.DB_PORT!)
+const dbSsl = process.env.DB_PORT === 'true' ? true : false
 
 const config: Knex.Config = {
   client: 'pg',
@@ -12,7 +13,10 @@ const config: Knex.Config = {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
-    port: Number(dbPort),
+    port: dbPort,
+    ssl: {
+      rejectUnauthorized: dbSsl,
+    },
   },
 }
 
