@@ -35,7 +35,8 @@
     "pg": "^8.7.1"
   },
   "scripts": {
+    "start": "node dist/index.js",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "dev": "yarn build && nodemon dist/index.js"
   }
 }
