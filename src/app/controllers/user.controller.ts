@@ -36,12 +36,6 @@ export async function createUser(
       })
       .returning(['id', 'first_name', 'last_name', 'email'])
 
-    if (!users.length) {
-      return res
-        .status(400)
-        .json({ success: false, error: 'Failed to register user.' })
-    }
-
     return res.status(200).json({ success: true, data: user })
   } catch (error: any) {
     return res.status(500).json({ success: false, error: error.message })
