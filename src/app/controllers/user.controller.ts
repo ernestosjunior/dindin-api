@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import knexInstance from '../../app/database'
+import jwt from 'jsonwebtoken';
 import { User } from '../../app/database/interfaces'
 import { userSchemas } from '../validations'
 
@@ -35,8 +36,11 @@ export async function createUser(
         password: hashPassword,
       })
       .returning(['id', 'first_name', 'last_name', 'email'])
+    
+    const apiKey = process.env.API_KEY!
+    const token = await jwt.sign({ id: user.id }, apiKey, { expiresIn: '1d' })
 
-    return res.status(200).json({ success: true, data: user })
+    return res.status(200).json({ success: true, data: {user, token} })
   } catch (error: any) {
     return res.status(500).json({ success: false, error: error.message })
   }
