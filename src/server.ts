@@ -10,6 +10,10 @@ async function start() {
   const fastify = Fastify({ logger: true })
   const port: number = (process.env.PORT && Number(process.env.PORT)) || 3333
 
+  fastify.get('/', async (_req, res) =>
+    res.status(200).send({ name: 'dindin-api' })
+  )
+
   await fastify.register(cors, { origin: true })
   await fastify.register(jwt, { secret: process.env.JWT_SECRET! })
   await fastify.register(userRoutes)
