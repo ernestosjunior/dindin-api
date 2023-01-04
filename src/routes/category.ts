@@ -4,7 +4,7 @@ import * as z from 'zod'
 import { prisma } from '../config/prisma'
 import status from 'http-status'
 
-export function categoryRoutes(fastify: FastifyInstance) {
+export async function categoryRoutes(fastify: FastifyInstance) {
   fastify.post('/category', { onRequest: [authenticate] }, async (req, res) => {
     const createCategoryBody = z.object({ title: z.string() })
 

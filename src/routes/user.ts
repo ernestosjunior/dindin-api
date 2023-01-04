@@ -20,7 +20,7 @@ export async function userRoutes(fastify: FastifyInstance) {
       const hasUser = await prisma.user.findUnique({ where: { email } })
 
       if (hasUser)
-        return res.status(status.BAD_REQUEST).send('User already exists.')
+        return res.status(status.CONFLICT).send('User already exists.')
 
       const hash = await bcrypt.hash(password, 10)
       const user = await prisma.user.create({

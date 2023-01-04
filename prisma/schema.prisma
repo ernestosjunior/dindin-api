@@ -18,6 +18,7 @@ model User {
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
   categories Category[]
+  Release    Release[]
 
   @@map("users")
 }
@@ -36,8 +37,11 @@ model Release {
   id          String    @id @default(uuid())
   date        DateTime
   description String
-  Category    Category? @relation(fields: [categoryId], references: [id])
+  value       Int
+  category    Category? @relation(fields: [categoryId], references: [id])
   categoryId  String?
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
 
   @@map("releases")
 }
