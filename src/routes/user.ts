@@ -17,6 +17,11 @@ export async function userRoutes(fastify: FastifyInstance) {
     const { name, email, password } = createUserBody.parse(req.body)
 
     try {
+      const hasUser = await prisma.user.findUnique({ where: { email } })
+
+      if (hasUser)
+        return res.status(status.BAD_REQUEST).send('User already exists.')
+
       const hash = await bcrypt.hash(password, 10)
       const user = await prisma.user.create({
         data: { name, email, password: hash },
@@ -35,13 +40,13 @@ export async function userRoutes(fastify: FastifyInstance) {
         where: { id: req.user.sub },
       })
 
-      if (!user) res.status(status.BAD_REQUEST).send('User not found.')
+      if (!user) return res.status(status.BAD_REQUEST).send('User not found.')
 
       const { password: userPassword, ...dataUser } = user as User
 
-      res.status(status.OK).send(dataUser)
+      return res.status(status.OK).send(dataUser)
     } catch (error) {
-      res.status(status.BAD_REQUEST).send()
+      return res.status(status.BAD_REQUEST).send()
     }
   })
 }
