@@ -32,8 +32,8 @@ export async function authRoutes(fastify: FastifyInstance) {
       )
 
       return res.status(status.OK).send(token)
-    } catch (error) {
-      return res.status(status.BAD_REQUEST).send()
+    } catch (error: any) {
+      return res.status(status.BAD_REQUEST).send(error.message)
     }
   })
 }

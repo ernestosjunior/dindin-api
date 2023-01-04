@@ -29,8 +29,8 @@ export async function userRoutes(fastify: FastifyInstance) {
       const { password: userPassword, ...dataUser } = user
 
       res.status(status.CREATED).send(dataUser)
-    } catch (error) {
-      res.status(status.BAD_REQUEST).send()
+    } catch (error: any) {
+      res.status(status.BAD_REQUEST).send(error.message)
     }
   })
 
@@ -45,8 +45,8 @@ export async function userRoutes(fastify: FastifyInstance) {
       const { password: userPassword, ...dataUser } = user as User
 
       return res.status(status.OK).send(dataUser)
-    } catch (error) {
-      return res.status(status.BAD_REQUEST).send()
+    } catch (error: any) {
+      return res.status(status.BAD_REQUEST).send(error.message)
     }
   })
 }

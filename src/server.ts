@@ -2,7 +2,7 @@ import Fastify from 'fastify'
 import * as dotenv from 'dotenv'
 import cors from '@fastify/cors'
 import jwt from '@fastify/jwt'
-import { userRoutes, authRoutes } from './routes'
+import { userRoutes, authRoutes, categoryRoutes } from './routes'
 
 dotenv.config()
 
@@ -14,6 +14,7 @@ async function start() {
   await fastify.register(jwt, { secret: process.env.JWT_SECRET! })
   await fastify.register(userRoutes)
   await fastify.register(authRoutes)
+  await fastify.register(categoryRoutes)
 
   try {
     await fastify.listen({ port })
