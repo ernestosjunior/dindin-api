@@ -27,6 +27,9 @@
     "zod": "^3.20.2"
   },
   "scripts": {
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/server.ts",
+    "build": "rimraf ./build && tsc",
+    "prisma:generate": "npx prisma generate",
+    "start": "yarn build && node build/server.js"
   }
 }
