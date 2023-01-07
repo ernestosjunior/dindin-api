@@ -30,6 +30,7 @@
     "dev": "tsx watch src/server.ts",
     "build": "rimraf ./build && tsc",
     "prisma:generate": "npx prisma generate",
+    "prisma:migrate:deploy": "npx prisma migrate deploy",
     "start": "yarn build && node build/server.js"
   }
 }

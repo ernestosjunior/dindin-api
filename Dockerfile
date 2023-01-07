@@ -39,6 +39,8 @@ COPY .env ./
 
 RUN yarn install --frozen-lockfile
 
+RUN yarn prisma:migrate:deploy
+
 RUN yarn prisma:generate
 
 COPY --from=development /user/app/build ./build
