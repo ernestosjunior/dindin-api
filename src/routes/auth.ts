@@ -31,7 +31,9 @@ export async function authRoutes(fastify: FastifyInstance) {
         { sub: user.id, expiresIn: '1d' }
       )
 
-      return res.status(status.OK).send(token)
+      const { password: userPassword, ...dataUser } = user
+
+      return res.status(status.OK).send({ user: dataUser, token })
     } catch (error: any) {
       return res.status(status.BAD_REQUEST).send(error.message)
     }

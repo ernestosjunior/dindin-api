@@ -11,11 +11,11 @@ export async function releaseRoutes(fastify: FastifyInstance) {
       description: z.string(),
       categoryId: z.string(),
       value: z.number().nonnegative(),
+      type: z.string(),
     })
 
-    const { date, description, categoryId, value } = createReleaseBody.parse(
-      req.body
-    )
+    const { date, description, categoryId, value, type } =
+      createReleaseBody.parse(req.body)
 
     try {
       const release = await prisma.release.create({
@@ -25,7 +25,9 @@ export async function releaseRoutes(fastify: FastifyInstance) {
           value,
           category: { connect: { id: categoryId } },
           user: { connect: { id: req.user.sub } },
+          type,
         },
+        include: { category: true },
       })
 
       return res.status(status.CREATED).send(release)
@@ -37,6 +39,7 @@ export async function releaseRoutes(fastify: FastifyInstance) {
     try {
       const releases = await prisma.release.findMany({
         where: { userId: req.user.sub },
+        include: { category: true },
       })
 
       return res.status(status.OK).send(releases)
